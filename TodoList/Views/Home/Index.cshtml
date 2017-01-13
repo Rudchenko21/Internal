@@ -1,0 +1,76 @@
+﻿@model TodoList.ViewModel.TaskTodoListViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    <link href="~/css/site.css" rel="stylesheet" />
+}
+@Html.ActionLink("Add task","Add","Home",new {@class="btn"})<br/>
+
+<div class="row">
+    <div class="col-lg-4 todo">
+        <h2>Task done</h2>
+        <br/>
+        @{
+            for (int i = 0; i < Model.LisTaskTodosStatusDone.Count; i++)
+            {
+                <div class="todo">
+                    <p>@Model.LisTaskTodosStatusDone[i].Text</p>
+
+                    @using (Html.BeginForm("Delete", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.LisTaskTodosStatusDone[i].Id" name="id" />
+                        <input type="submit" class="btn btn-danger" value="Delete" />
+                    }
+                </div>
+                <br/>
+            }
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <h2>Task in progress</h2>
+        <br />
+        @{
+            for (int i = 0; i < Model.LisTaskTodosStatusInprogress.Count; i++)
+            {
+                <div class="todo">
+                    <p>@Model.LisTaskTodosStatusInprogress[i].Text</p>
+                    @using (Html.BeginForm("Update", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.LisTaskTodosStatusInprogress[i].Id" name="id" />
+                        <input type="submit" class="btn btn-success" value="Done" />
+                    }<br/>
+                    @using (Html.BeginForm("Delete", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.LisTaskTodosStatusInprogress[i].Id" name="id" />
+                        <input type="submit" class="btn btn-danger" value="Delete" />
+                    }
+                </div>
+                <br />
+            }
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <h2>Task planned</h2>
+        <br />
+        @{
+            for (int i = 0; i < Model.LisTaskTodosStatusPlanned.Count; i++)
+            {
+                <div class="todo">
+                    <p>@Model.LisTaskTodosStatusPlanned[i].Text</p>
+                    @using (Html.BeginForm("Update", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.LisTaskTodosStatusPlanned[i].Id" name="id" />
+                        <input type="submit" class="btn btn-success" value="In Progress" />
+                    }<br/>
+                    @using (Html.BeginForm("Delete", "Home", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.LisTaskTodosStatusPlanned[i].Id" name="id" />
+                        <input type="submit" class="btn btn-danger" value="Delete" />
+                    }
+                </div>
+                <br />
+            }
+        }
+    </div>
+</div>
