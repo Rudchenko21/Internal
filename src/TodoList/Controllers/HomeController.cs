@@ -38,11 +38,6 @@ namespace TodoList.Controllers
                 LisTaskTodosStatusPlanned = _context.TaskTodos.Where(m => m.Status== Status.Planned).ToList()
             };
 
-            return View(viewModel);
-        }
-
-        private async Task Method(TaskTodoListViewModel viewModel)
-        {
             foreach (var link in _apiList)
             {
                 using (var httpclient = new HttpClient())
@@ -51,20 +46,19 @@ namespace TodoList.Controllers
                     var todoList = JsonConvert.DeserializeObject<TaskTodo[]>(respond);
 
                     viewModel.LisTaskTodosStatusDone =
-                        viewModel.LisTaskTodosStatusDone.Concat(todoList.Where(m => m.Status == Status.Done))
-                            .ToList();
+                        viewModel.LisTaskTodosStatusDone.Concat(todoList.Where(m => m.Status == Status.Done)).ToList();
 
                     viewModel.LisTaskTodosStatusInprogress =
-                        viewModel.LisTaskTodosStatusInprogress.Concat(
-                                todoList.Where(m => m.Status == Status.InProgress))
+                        viewModel.LisTaskTodosStatusInprogress.Concat(todoList.Where(m => m.Status == Status.InProgress))
                             .ToList();
 
                     viewModel.LisTaskTodosStatusPlanned =
-                        viewModel.LisTaskTodosStatusPlanned.Concat(
-                                todoList.Where(m => m.Status == Status.Planned))
+                        viewModel.LisTaskTodosStatusPlanned.Concat(todoList.Where(m => m.Status == Status.Planned))
                             .ToList();
                 }
             }
+
+            return View(viewModel);
         }
 
         [HttpPost]
