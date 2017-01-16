@@ -42,14 +42,21 @@ namespace TodoList.Controllers
             {
                 using (var httpclient = new HttpClient())
                 {
+
+                    Policy
+                        .HandleResult<HttpResponse>(r => r.StatusCode == 400)
+                        .Retry(3);
+
                     var respond = await httpclient.GetStringAsync(link);
                     var todoList = JsonConvert.DeserializeObject<TaskTodo[]>(respond);
 
                     viewModel.LisTaskTodosStatusDone =
-                        viewModel.LisTaskTodosStatusDone.Concat(todoList.Where(m => m.Status == Status.Done)).ToList();
+                        viewModel.LisTaskTodosStatusDone.Concat(todoList.Where(m => m.Status == Status.Done))
+                            .ToList();
 
                     viewModel.LisTaskTodosStatusInprogress =
-                        viewModel.LisTaskTodosStatusInprogress.Concat(todoList.Where(m => m.Status == Status.InProgress))
+                        viewModel.LisTaskTodosStatusInprogress.Concat(
+                                todoList.Where(m => m.Status == Status.InProgress))
                             .ToList();
 
                     viewModel.LisTaskTodosStatusPlanned =
